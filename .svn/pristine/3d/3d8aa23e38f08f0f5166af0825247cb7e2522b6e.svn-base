@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Configuracion" >
+
+    <Spinner
+        android:id="@+id/spinner_carreras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+
+    <CheckBox
+        android:id="@+id/check_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:text="@string/1_nivel" />
+
+    <CheckBox
+        android:id="@+id/check_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/check_1"
+        android:text="@string/2_nivel" />
+
+    <CheckBox
+        android:id="@+id/check_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/check_2"
+        android:text="@string/3_nivel" />
+
+    <CheckBox
+        android:id="@+id/check_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/check_3"
+        android:text="@string/4_nivel" />
+
+    <CheckBox
+        android:id="@+id/check_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/check_4"
+        android:text="@string/5_nivel" />
+
+    <CheckBox
+        android:id="@+id/check_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/check_5"
+        android:text="@string/6_nivel" />
+
+</RelativeLayout>

@@ -1,0 +1,84 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Nombres;
+import com.arquitecturas.sysacad.utils.Filtros;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+
+public class TramitePaseFacultad extends ActionBarActivity {
+	
+	private EditText nombre;
+	private EditText apellido;
+	private EditText especialidad;
+	private EditText facultadDestino;
+	private EditText especialidadDestino;
+	private Alumno alumno;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_tramite_pase_facultad);
+		inicializar();
+	}
+	
+	private void inicializar() {
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(Nombres.COLOR_ACTIONBAR)));
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);		
+		
+		alumno = Alumno.getInstance();
+		nombre = (EditText) findViewById(R.id.textNombre);
+		apellido = (EditText) findViewById(R.id.textApellido);
+		especialidad = (EditText) findViewById(R.id.textEspecialidad);
+		facultadDestino = (EditText) findViewById(R.id.textFacultadDestino);
+		especialidadDestino = (EditText) findViewById(R.id.textEspecialidadDestino);
+		
+		nombre.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		apellido.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		especialidad.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		facultadDestino.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		especialidadDestino.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (MainActivity.isUsuarioLogeado()) {
+			getSupportActionBar().setSubtitle(
+					"Identificado como " + alumno.getNombre() + " "
+							+ alumno.getApellido());
+		} else {
+			getSupportActionBar().setSubtitle("Ninguna sesión iniciada");
+		}
+
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.tramite_pase_facultad, menu);
+		return true;
+	}
+
+}

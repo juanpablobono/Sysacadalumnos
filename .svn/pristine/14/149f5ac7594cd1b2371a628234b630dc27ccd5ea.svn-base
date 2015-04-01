@@ -1,0 +1,66 @@
+package com.arquitecturas.sysacad.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Materia;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+public class CursadoMateriasAdapter extends ArrayAdapter<Materia> {
+	
+	private LayoutInflater mInflater;
+	private ArrayList<Materia> mMaterias;
+
+	public CursadoMateriasAdapter(Context context, int resource,
+			int textViewResourceId, List<Materia> objects) {
+		
+		super(context, resource, textViewResourceId, objects);
+		
+		mMaterias = (ArrayList<Materia>) objects;
+		mInflater = LayoutInflater.from(context);
+	}
+	
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final ViewHolder holder;
+		
+		if(convertView == null){
+			holder = new ViewHolder();
+			convertView = mInflater.inflate(R.layout.lst_cursado_item, null);
+			holder.lblNombre = (TextView) convertView.findViewById(R.id.lblNombreMateria);
+			holder.lblCondicion = (TextView) convertView.findViewById(R.id.lblCondicion);
+			holder.lblAnio = (TextView) convertView.findViewById(R.id.lblNivel);
+			holder.lblAula = (TextView) convertView.findViewById(R.id.lblAula);
+			holder.lblHorarios = (TextView) convertView.findViewById(R.id.lblHorarios);
+			holder.lblParciales = (TextView) convertView.findViewById(R.id.lblParciales);
+			convertView.setTag(holder);			
+		}else{
+			holder = (ViewHolder) convertView.getTag();
+		}
+		
+		holder.lblNombre.setText(mMaterias.get(position).getNombre());
+		holder.lblCondicion.setText(mMaterias.get(position).getCondicion());
+		holder.lblAnio.setText(mMaterias.get(position).getAnio());
+		holder.lblAula.setText(mMaterias.get(position).getAula());
+		holder.lblHorarios.setText(mMaterias.get(position).getHorarios());
+		holder.lblParciales.setText(mMaterias.get(position).getParciales());
+		
+		return convertView;
+	}
+	
+	private class ViewHolder{
+		public TextView lblNombre;
+		public TextView lblCondicion;
+		public TextView lblAnio;
+		public TextView lblAula;
+		public TextView lblHorarios;
+		public TextView lblParciales;
+	}
+}

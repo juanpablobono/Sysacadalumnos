@@ -1,0 +1,129 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Nombres;
+
+import android.R.integer;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class Login extends ActionBarActivity {
+
+	private Button but_enviar;
+	private EditText text_legajo;
+	private EditText text_pass;
+	private Alumno alumno;
+	private final int ID_NOTAS_PARCIALES = 0;
+	private final int ID_CONSULTAS = 1;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		inicializar();
+		
+		if(alumno.getLegajo() != 0){
+			text_legajo.setText(alumno.getLegajo());
+			text_pass.requestFocus();
+		}
+		else{
+			text_legajo.requestFocus();			
+		}
+		
+		but_enviar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent in = null;
+				loguear();
+				if (loguear()) {
+	//					alumno.setLegajo(Integer.parseInt(text_legajo.getText().toString()));
+					if (getIntent().getExtras().getInt(Nombres.SIGUIENTE) == ID_NOTAS_PARCIALES) {
+						in = new Intent(Login.this, NotasParciales.class);
+					} else if (getIntent().getExtras().getInt(Nombres.SIGUIENTE) == ID_CONSULTAS) {
+						in = new Intent(Login.this, Consultas.class);
+					}
+					startActivity(in);
+				}
+				else {
+					lanzarDialogo();
+				}
+			}
+		});
+	}
+
+	private boolean loguear() {
+				
+		boolean usuarioLogueado = true;
+		/*TODO cambiar usuariologueado a false cuando esté lista la 
+		 * lógica para enviar los datos y loguearse*/
+		//enviar datos y recibir respuesta
+		if(usuarioLogueado) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+
+	private void lanzarDialogo() {
+				
+		AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+		builder.setTitle(R.string.title_activity_login);
+		builder.setMessage("Nombre de usuario y/o contraseña incorrectos");
+		builder.setCancelable(false);
+		
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();						
+			}
+		});
+		AlertDialog dialogo = builder.create();
+		dialogo.show();
+	}
+		
+
+	private void inicializar() {
+		but_enviar = (Button) findViewById(R.id.login_boton_enviar);
+		text_legajo = (EditText) findViewById(R.id.login_legajo);
+		text_pass = (EditText) findViewById(R.id.login_password);
+		alumno = Alumno.getInstance(getPreferences(Context.MODE_PRIVATE));
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+
+}

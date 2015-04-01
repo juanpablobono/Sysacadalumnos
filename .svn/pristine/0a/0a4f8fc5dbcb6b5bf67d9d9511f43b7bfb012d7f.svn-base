@@ -1,0 +1,183 @@
+package com.arquitecturas.sysacad.ui;
+
+import java.sql.Timestamp;
+import java.text.BreakIterator;
+
+import javax.security.auth.PrivateCredentialPermission;
+
+import com.arquitecturas.*;
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Nombres;
+
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import junit.framework.Protectable;
+import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.view.View.OnClickListener;
+
+public class MainActivity extends ActionBarActivity {
+	
+	private String[] opciones = { "Notas de parciales", "Notificaciones", "Calendario", "Consultas", "Informacion extra", "Datos personales", "Configuracion"
+			/*getResources().getString(R.string.title_activity_notificaciones),
+			getResources().getString(R.string.title_activity_notificaciones),
+			getResources().getString(R.string.title_activity_calendario),
+			getResources().getString(R.string.title_activity_consultas),
+			getResources().getString(R.string.title_activity_informacion_extra),
+			getResources().getString(R.string.title_activity_datos_personales),
+			getResources().getString(R.string.title_activity_configuracion)*/ };
+	private String password;
+	protected Alumno alumno;
+	private ListView lista;
+	private boolean usuarioLogeado = false;
+	private SharedPreferences sharedPreferences;
+	private SharedPreferences.Editor editor;
+	private final int ID_NOTAS_PARCIALES = 0;
+	private final int ID_CONSULTAS = 1;
+
+//	@Override
+//	protected void onStart() {
+//		super.onStart();
+//		
+//		long timeStamp = getSharedPreferences().getLong(Nombres.TIMESTAMP, 0);
+//		long meses = 15552000000000;
+//		if(System.currentTimeMillis() < (timeStamp + meses)) {
+//			actualizarDatosPersonales();
+//		}
+//	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		inicializar();
+		
+		
+		lista.setOnItemClickListener(new OnItemClickListener() {
+			
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id){
+				
+				Intent in = null;
+				
+				switch(position){
+				case 0:
+					if(!isUsuarioLogeado()) {
+						in = new Intent(MainActivity.this, Login.class);
+						in.putExtra(Nombres.SIGUIENTE, ID_NOTAS_PARCIALES);	
+					}
+					else {
+						in = new Intent(MainActivity.this, NotasParciales.class);
+					}
+					break;
+				case 1:
+					in = new Intent(MainActivity.this, Notificaciones.class);
+					break;
+				case 2:
+					in = new Intent(MainActivity.this, Calendario.class);
+				break;
+				case 3:
+					if(!isUsuarioLogeado()) {
+						in = new Intent(MainActivity.this, Login.class);
+						in.putExtra(Nombres.SIGUIENTE, ID_CONSULTAS);	
+					}
+					else {
+						in = new Intent(MainActivity.this, Consultas.class);
+					}
+				break;
+				case 4:
+					in = new Intent(MainActivity.this, InformacionExtra.class);
+					break;
+				case 5:
+					in = new Intent(MainActivity.this, DatosPersonales.class);
+					in.putExtra(Nombres.ACTUALIZAR, false);
+					break;
+				case 6:
+					in = new Intent(MainActivity.this, Configuracion.class);
+					break;
+				default:
+					break;
+				}			
+				startActivity(in);				
+			}
+		});
+	}
+
+	private void inicializar() {
+		
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.holo_blue_bright));
+		alumno = Alumno.getInstance(getPreferences(Context.MODE_PRIVATE));
+		lista = (ListView) findViewById(R.id.listView_main);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.layout_listas, opciones);
+		lista.setAdapter(adapter);
+		
+	}
+
+	private SharedPreferences getSharedPreferences() {
+		if(sharedPreferences == null) {
+			sharedPreferences = getPreferences(Context.MODE_PRIVATE);			
+		}
+		return sharedPreferences;
+	}
+	
+	private boolean isUsuarioLogeado() {
+		return usuarioLogeado;
+	}
+	
+	private void setUsuarioLogeado(boolean usuarioLogeado) {
+		this.usuarioLogeado = usuarioLogeado;
+	}
+	
+	private SharedPreferences.Editor getEditor() {
+		
+		if(editor == null) {
+			editor = sharedPreferences.edit();
+		}
+		
+		return editor;
+	}
+	
+	private String getPassword() {
+		return password;
+	}
+	
+	private void setPassword(String password) {
+		this.password = password;
+	}
+	
+	private void actualizarDatosPersonales() {
+		Intent in = new Intent(MainActivity.this, DatosPersonales.class);
+		in.putExtra(Nombres.ACTUALIZAR, true);
+		startActivity(in);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+}

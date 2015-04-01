@@ -1,0 +1,89 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class Login extends ActionBarActivity {
+
+	private Button but_enviar;
+	private EditText text_legajo;
+	private EditText text_pass;
+	private final int ID_NOTAS_PARCIALES = 0;
+	private final int ID_CONSULTAS = 1;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		but_enviar = (Button) findViewById(R.id.but_enviar);
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		text_legajo = (EditText) findViewById(R.id.legajo_login);
+		text_pass = (EditText) findViewById(R.id.password_login);
+		
+		if(sharedPreferences.getBoolean("legajo", false)){
+			text_pass.requestFocus();
+		}
+		else{
+			text_legajo.requestFocus();			
+		}
+		
+		but_enviar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent in = null;
+				//enviar datos y recibir respuesta
+				//si la autorizacion es valida
+				//guardarLegajo(text_legajo.getText().toString());
+				if(getIntent().getExtras().getInt("siguiente") == ID_NOTAS_PARCIALES) {
+					in = new Intent(Login.this, NotasParciales.class);
+				}
+				else if (getIntent().getExtras().getInt("siguiente") == ID_CONSULTAS) {
+					in = new Intent(Login.this, Consultas.class);					
+				}
+				startActivity(in);
+			}
+		});
+	}
+
+	private void guardarLegajo(String legajo) {
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+	    SharedPreferences.Editor editor = sharedPreferences.edit();
+	    editor.putBoolean("legajo", true);
+	    editor.putString("texto_legajo", legajo);
+	    editor.commit();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+
+}

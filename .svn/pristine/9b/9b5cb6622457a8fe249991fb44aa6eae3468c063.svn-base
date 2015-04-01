@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@android:color/background_light"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/lblNombreMateria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Calidad en el Desarrollo de Software(Elec.)" 
+        android:layout_toLeftOf="@+id/lblCondicion"
+        android:layout_marginRight="5dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/lblCondicion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/darker_gray"
+        android:text="Regular" 
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+    
+    <TextView
+        android:id="@+id/lblNivel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblNombreMateria"
+        android:textColor="@android:color/darker_gray"
+        android:text="5to nivel. " />
+
+    <TextView
+        android:id="@+id/lblForAula"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/lblNivel"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/lblNombreMateria"
+        android:text="Aula " />
+
+    <TextView
+        android:id="@+id/lblAula"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/lblForAula"        
+        android:layout_below="@+id/lblNombreMateria"
+        android:textColor="@android:color/darker_gray"
+        android:text="12 San Francisco" />
+
+    <TextView
+        android:id="@+id/lblForHorarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblNivel"
+        android:text="Horarios " />
+    
+    <View 
+        android:id="@+id/viewSeparadorHorarios"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/lblForHorarios"
+        android:padding="5dp"/>
+    
+    <TextView
+        android:id="@+id/lblHorarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewSeparadorHorarios"
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/lblForParciales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblHorarios"
+        android:text="Parciales " />
+
+    <TextView
+        android:id="@+id/lblParciales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lblForParciales"
+        android:text="" />
+
+</RelativeLayout>

@@ -1,0 +1,175 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Carrera;
+import com.arquitecturas.sysacad.logic.Nombres;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+
+public class DatosPersonales extends ActionBarActivity {
+	
+	private EditText legajo;
+	private EditText nombre;
+	private EditText apellido;
+	private EditText domicilio;
+	private EditText telefono;
+	private EditText dni;
+	private EditText email;
+	private Spinner spinner_carreras;
+	private Button but_enviar;
+	private Alumno alumno;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_datos_personales);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		inicializar();
+		
+		if(getIntent().getExtras().getBoolean(Nombres.ACTUALIZAR)) {
+			
+			mostrarDialogo("Por favor, comproba que tus datos sean correctos");
+			
+			legajo.setText(alumno.getLegajo());
+			legajo.setInputType(InputType.TYPE_NULL);
+			
+			nombre.setText(alumno.getNombre());
+			nombre.setInputType(InputType.TYPE_NULL);
+			
+			apellido.setText(alumno.getApellido());
+			apellido.setInputType(InputType.TYPE_NULL);
+			
+			domicilio.setText(alumno.getDomicilio());
+			
+			telefono.setText(alumno.getTelefono());
+			
+			dni.setText(alumno.getDni());
+			dni.setInputType(InputType.TYPE_NULL);
+			
+			email.setText(alumno.getEmail());
+
+			spinner_carreras.setSelection(alumno.getCarrera().getId());
+		}
+		else {
+			mostrarDialogo("Por favor, completa tus datos personales");
+		}
+		
+		but_enviar.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {				
+				if (/*camposCompletos()*/false) {
+					
+						alumno.setNombre((nombre.getText().toString()));
+						alumno.setApellido(apellido.getText().toString());
+						alumno.setDni(Integer.parseInt(dni.getText().toString()));
+						alumno.setDomicilio(domicilio.getText().toString());
+						alumno.setTelefono(Integer.parseInt(telefono.getText().toString()));
+						alumno.setEmail(email.getText().toString());
+						alumno.setIdCarrera(spinner_carreras.getSelectedItemPosition());
+						
+						if (getIntent().getExtras().getBoolean(Nombres.ACTUALIZAR)) {
+							Intent in = new Intent(DatosPersonales.this, Configuracion.class);
+							in.putExtra(Nombres.ACTUALIZAR, true);
+							startActivity(in);
+						}
+					}
+				else {
+						mostrarDialogo("Por favor, comproba que los campos estén completados correctamente");					
+				}
+				
+			}
+		});
+	}
+
+	private boolean camposCompletos() {
+	if(nombre.getText().toString() != null) {
+		if(apellido.getText().toString() != null) {
+			if(dni.getText().toString() != null) {
+				if(domicilio.getText().toString() != null) {
+					if(telefono.getText().toString() != null) {
+						if(email.getText().toString() != null) {
+							if(spinner_carreras.getSelectedItemPosition() != 0) {
+								return true;
+							}
+						} 						
+					} 					
+				} 				
+			} 
+		}
+	}
+	return false;
+}
+	
+	private void inicializar() {
+		
+		legajo = (EditText) findViewById(R.id.datos_legajo);
+		nombre = (EditText) findViewById(R.id.datos_nombre);
+		apellido = (EditText) findViewById(R.id.datos_apellido);
+		domicilio = (EditText) findViewById(R.id.datos_domicilio);
+		telefono = (EditText) findViewById(R.id.datos_telefono);
+		dni = (EditText) findViewById(R.id.datos_dni);
+		email = (EditText) findViewById(R.id.datos_email);
+		spinner_carreras = (Spinner) findViewById(R.id.spinner_carreras);
+		but_enviar = (Button) findViewById(R.id.datos_boton_enviar);
+		alumno.getInstance(getPreferences(Context.MODE_PRIVATE));
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.layout_listas, Carrera.getNombresDeCarreras());
+		spinner_carreras.setAdapter(adapter);
+	}
+	
+	private void mostrarDialogo(String mensaje) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(DatosPersonales.this);
+		builder.setTitle(R.string.datos_personales);
+		builder.setMessage(mensaje);
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		
+		AlertDialog dialogo = builder.create();
+		dialogo.show();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		//getMenuInflater().inflate(R.menu.datos_personales, menu);
+		return true;
+	}
+
+}

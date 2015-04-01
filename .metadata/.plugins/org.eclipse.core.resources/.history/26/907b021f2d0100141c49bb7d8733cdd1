@@ -1,0 +1,137 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Nombres;
+import com.arquitecturas.sysacad.utils.Filtros;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+public class TramiteMesaExamen extends ActionBarActivity {
+
+	private EditText textNombre;
+	private EditText textApellido;
+	private EditText textDNI;
+	private EditText textLegajo;
+	private EditText textEspecialidad;
+	private EditText textPlan;
+	private EditText textAsignaturas;
+	private EditText textTelefono;
+	private EditText textEmail;
+	private EditText textObservaciones;
+	private String recipient;
+	private String subject;
+	private Button buttonEnviar;
+	private Alumno alumno;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_tramite_mesa_examen);
+		
+		inicializar();
+		buttonEnviar.setOnClickListener(new View.OnClickListener() {
+		public void onClick(View view) {
+		sendEmail();
+		
+		
+		}
+		});
+	}
+	private void inicializar() {		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(Nombres.COLOR_ACTIONBAR)));
+		
+		alumno = Alumno.getInstance();
+		textNombre = (EditText) findViewById(R.id.textNombre);
+		textApellido = (EditText) findViewById(R.id.textApellido);
+		textDNI = (EditText) findViewById(R.id.textDni);
+		textLegajo = (EditText) findViewById(R.id.textLegajo);
+		textEspecialidad = (EditText) findViewById(R.id.textEspecialidad);
+		textPlan = (EditText) findViewById(R.id.textPlan);
+		textAsignaturas = (EditText) findViewById(R.id.textAsignaturas);
+		textEmail = (EditText) findViewById(R.id.textEmail);
+		textTelefono = (EditText) findViewById(R.id.textTelefono);
+		subject = (String) "Solicitud de certificado - Sysacad Movil";
+		textObservaciones = (EditText) findViewById(R.id.textObservaciones);		
+		buttonEnviar = (Button) findViewById(R.id.buttonEnviar);
+		
+		textNombre.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		textApellido.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+		textEspecialidad.setFilters(new InputFilter[] {Filtros.filtroNumerico()});
+	}
+
+protected void sendEmail() {
+		
+		//cambiar mail una vez terminado por certificados_syacad@frsfco.utn.edu.ar
+		recipient = (String) "agustingorgni25@gmail.com";
+		String[] recipients = {recipient};
+		Intent email = new Intent(Intent.ACTION_SEND, Uri.parse("mailto:"));
+		email.setType("message/rfc822");
+			 
+		email.putExtra(Intent.EXTRA_EMAIL, recipients);
+		email.putExtra(Intent.EXTRA_SUBJECT, subject);
+		email.putExtra(Intent.EXTRA_TEXT, "Nombre y apellido: " + textNombre.getText().toString() + "\nLegajo: " + textLegajo.getText().toString() + "\nDNI: " + textDNI.getText().toString() + "\nPlan: " + textPlan.getText().toString() + "\nEspecialidad: " + textEspecialidad.getText().toString() + "\nAsignaturas: " + textAsignaturas.getText().toString() + "\nTelefono: "+ textTelefono.getText().toString() + "\nEmail: "+ textEmail.getText().toString() + "\nObservaciones: " + textObservaciones.getText().toString() );
+		
+		
+		try {
+		// el usuario elige el cliente de mail
+		startActivity(Intent.createChooser(email, "Elija un cliente de email..."));
+		
+		} catch (android.content.ActivityNotFoundException ex) {
+		  Toast.makeText(TramiteMesaExamen.this, "No hay cliente de eMail instalado.",
+		            Toast.LENGTH_LONG).show();
+		 }
+	 }
+
+
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (MainActivity.isUsuarioLogeado()) {
+			getSupportActionBar().setSubtitle(
+					"Identificado como " + alumno.getNombre() + " "
+							+ alumno.getApellido());
+		} else {
+			getSupportActionBar().setSubtitle("Ninguna sesión iniciada");
+		}
+
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.actividades_tramites, menu);
+		return true;
+	}
+
+}

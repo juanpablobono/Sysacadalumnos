@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;JARVIS&apos;&#x0D;&#x0A;- Original project: &apos;JARVIS&apos;&#x0D;&#x0A;- Original element: &apos;Calendario.asdfda.java&apos;" description="Delete element" element1="/src&lt;Calendario{asdfda.java" elements="1" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1372733518589" subPackages="false" version="1.0"/>
+</session>

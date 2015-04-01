@@ -1,0 +1,135 @@
+package com.arquitecturas.sysacad.utils;
+
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.arquitecturas.sysacad.logic.Evento;
+import com.arquitecturas.sysacad.logic.Nombres;
+
+public class LectorJSON {
+	
+	
+//	public static ArrayList<Evento> leerCalendario(String documentoJson, String especialidadABuscar, String tipoEvento) {
+//		
+//		JSONObject json;
+//		ArrayList<Evento> eventos = new ArrayList<Evento>();
+//		JSONArray calendario;
+//		int anio;
+//		
+//		try {
+//			json = new JSONObject(documentoJson);
+//			if (json.getString(Nombres.ESTADO) == "2-OK") {
+//				calendario = json.getJSONArray(Nombres.CALENDARIO_JSON);
+//				
+//				for (int i = 0; i < calendario.length(); i++) {
+//					try {
+//						JSONObject item = calendario.getJSONObject(i);
+//						
+//						anio = Integer.parseInt(item.getString(Nombres.ANIO));
+//						
+//						if(item.getString(Nombres.ESPECIALIDAD).equalsIgnoreCase(especialidadABuscar)) {
+//						
+//							JSONArray eventosAAgregar = item.getJSONArray(tipoEvento);
+//							
+//							for (int j = 0; j < eventosAAgregar.length(); j++) {
+//							
+//								if (tipoEvento == Nombres.PRIMEROS_ANIOS || tipoEvento == Nombres.RECESOS) {
+//								
+//									JSONObject itemEvento = eventosAAgregar.getJSONObject(j);
+//									eventos.add(new Evento(anio, especialidadABuscar, tipoEvento,
+//											FormateadoFechas.parsear(itemEvento.getString(Nombres.INICIO)), 
+//													FormateadoFechas.parsear(itemEvento.getString(Nombres.FIN))));
+//								} else {
+//									
+//									JSONObject itemEvento = eventosAAgregar.getJSONObject(j);
+//									eventos.add(new Evento(anio, especialidadABuscar, tipoEvento,
+//											FormateadoFechas.parsear(itemEvento.getString(Nombres.FECHA))));									
+//								}
+//							}
+//						}
+//						
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return eventos;
+//	}
+//	
+//	public static ArrayList<Evento> leerCalendario2(String documentoJson, String especialidadABuscar, String tipoEvento) {
+//		
+//		JSONObject json;
+//		ArrayList<Evento> eventos = new ArrayList<Evento>();
+//		JSONArray calendario;
+//		int anio;
+//		
+//		try {
+//			json = new JSONObject(documentoJson);
+//			if (json.getString(Nombres.ESTADO) == "2-OK") {
+//				calendario = new JSONObject(json.getString(Nombres.CALENDARIOS_JSON)).getJSONArray(Nombres.CALENDARIO_JSON);
+//				
+//				for (int i = 0; i < calendario.length(); i++) {
+//					try {
+//						JSONObject item = calendario.getJSONObject(i);
+//						
+//						anio = Integer.parseInt(item.getString(Nombres.ANIO));
+//						
+//						if(item.getString(Nombres.ESPECIALIDAD).equalsIgnoreCase(especialidadABuscar)) {
+//							
+//							JSONArray eventosAAgregar = item.getJSONArray(tipoEvento);
+//							
+//							for (int j = 0; j < eventosAAgregar.length(); j++) {
+//								
+//								if (tipoEvento == Nombres.PRIMEROS_ANIOS || tipoEvento == Nombres.RECESOS) {
+//									
+//									JSONObject itemEvento = eventosAAgregar.getJSONObject(j);
+//									eventos.add(new Evento(anio, especialidadABuscar, tipoEvento,
+//											FormateadoFechas.parsear(itemEvento.getString(Nombres.INICIO)), 
+//											FormateadoFechas.parsear(itemEvento.getString(Nombres.FIN))));
+//								} else {
+//									
+//									JSONObject itemEvento = eventosAAgregar.getJSONObject(j);
+//									eventos.add(new Evento(anio, especialidadABuscar, tipoEvento,
+//											FormateadoFechas.parsear(itemEvento.getString(Nombres.FECHA))));									
+//								}
+//							}
+//						}
+//						
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return eventos;
+//	}
+	
+	public static String leerEstadoLogin(String documentoJson) {
+		
+		JSONObject json;
+		String estado = null;
+		
+		try {
+			json =  new JSONObject(documentoJson);
+			
+			estado = json.getString(Nombres.ESTADO);				
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			return estado;
+		}
+	}
+}

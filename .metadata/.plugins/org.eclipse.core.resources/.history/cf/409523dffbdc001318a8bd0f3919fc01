@@ -1,0 +1,68 @@
+package com.arquitecturas.sysacad;
+
+import com.arquitecturas.sysacad.R;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class Login extends Activity {
+
+	Button boton;
+	EditText text_legajo;
+	EditText text_pass;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		
+		//boton = (Button) findViewById(R.id.btn_ingresar);
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		text_legajo = (EditText) findViewById(R.id.textLegajo);
+		text_pass = (EditText) findViewById(R.id.textPassword);
+		text_legajo.setText(sharedPreferences.getString("texto_legajo", ""));
+		
+		if(sharedPreferences.getBoolean("legajo", false)){
+			text_pass.requestFocus();
+		}
+		else{
+			text_legajo.requestFocus();			
+		}
+		
+		boton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//enviar datos y recibir respuesta
+				//si la autorizacion es valida
+				guardarLegajo(text_legajo.getText().toString());
+				Intent in = new Intent(Login.this, Consultas.class);
+				startActivity(in);
+			}
+		});
+	}
+
+	private void guardarLegajo(String legajo) {
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+	    SharedPreferences.Editor editor = sharedPreferences.edit();
+	    editor.putBoolean("legajo", true);
+	    editor.putString("texto_legajo", legajo);
+	    editor.commit();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+
+}

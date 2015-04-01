@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".TramiteTituloProfesional" >
+    <ScrollView
+               android:id="@+id/scrollView1"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:layout_alignParentTop="true" >
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <EditText
+                android:id="@+id/textNombre"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:hint="@string/nombre" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/textDni"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textNombre"
+                android:ems="10"
+                android:hint="@string/dni"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/textLegajo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textDni"
+                android:ems="10"
+                android:hint="@string/legajo"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/textEspecialidad"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLegajo"
+                android:ems="10"
+                android:hint="@string/especialidad" />
+
+            <EditText
+                android:id="@+id/textTituloSolicitado"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textEspecialidad"
+                android:ems="10"
+                android:hint="@string/tituloSolicitado" />
+
+            <EditText
+                android:id="@+id/textLugarNacimiento"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTituloSolicitado"
+                android:ems="10"
+                android:hint="@string/lugarNacimiento" />
+
+            <EditText
+                android:id="@+id/textFechaNacimiento"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textLugarNacimiento"
+                android:ems="10"
+                android:inputType="date"
+                android:hint="@string/fechaNacimiento" />
+            
+            <EditText
+                android:id="@+id/textDomicilio"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFechaNacimiento"
+                android:ems="10"
+                android:hint="@string/domicilio" />
+
+            <EditText
+                android:id="@+id/textTelefono"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textDomicilio"
+                android:ems="10"
+                android:inputType="number"
+                android:hint="@string/telefono" />
+            
+            <EditText
+                android:id="@+id/textEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTelefono"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:hint="@string/email" />
+
+           <Button
+                android:id="@+id/buttonEnviar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textEmail"
+                android:text="@string/enviarSolicitud" />
+
+         </RelativeLayout>
+
+
+           </ScrollView>
+
+</RelativeLayout>

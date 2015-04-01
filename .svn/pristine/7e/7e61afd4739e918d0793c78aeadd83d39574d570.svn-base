@@ -1,0 +1,41 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+           <item name="android:textColor">@android:color/black</item> 
+    </style>
+    <style name="temaSysacad" parent="@style/Theme.AppCompat.Light">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    
+    <style name="CustomActionBarTheme"
+           parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/actionbar_background</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/actionbar_background</item>
+    </style>
+
+<!--
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
+    <style name="estiloSysacad">
+      	<item name="android:textColor">#ffffff</item>
+    </style>-->
+
+</resources>

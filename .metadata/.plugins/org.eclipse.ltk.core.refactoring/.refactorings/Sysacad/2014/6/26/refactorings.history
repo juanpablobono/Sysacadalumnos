@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Sysacad/res/layout/listview_layout.xml&apos; to &apos;listview_main.xml&apos;" description="Rename resource &apos;listview_layout.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/layout/listview_layout.xml" name="listview_main.xml" stamp="1404076518682" updateReferences="true"/>
+</session>

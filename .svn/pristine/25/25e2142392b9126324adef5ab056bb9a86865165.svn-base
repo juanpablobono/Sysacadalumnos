@@ -1,0 +1,21 @@
+package com.arquitecturas.sysacad.utils;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
+
+public class CursadoMateriasAdapter extends ArrayAdapter<String> {
+	
+	LayoutInflater mInflater;
+	
+
+	public CursadoMateriasAdapter(Context context, int resource,
+			int textViewResourceId, List<String> objects) {
+		super(context, resource, textViewResourceId, objects);
+		
+		mInflater = LayoutInflater.from(context);
+	}
+
+}

@@ -1,0 +1,318 @@
+package com.arquitecturas.sysacad.ui;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+import android.R.array;
+import android.R.string;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+import com.arquitecturas.sysacad.logic.Carrera;
+import com.arquitecturas.sysacad.logic.Hashtag;
+import com.arquitecturas.sysacad.logic.Nombres;
+import com.arquitecturas.sysacad.utils.Hashtags;
+
+@SuppressLint("NewApi")
+public class Configuracion extends ActionBarActivity {
+
+	private Spinner spinner_carrera;
+	private int cantidadMaximaDeAnios = 7;
+	private CheckBox[] checks_Anios = new CheckBox[cantidadMaximaDeAnios];
+	private Button but_guardar;
+	private Carrera carreraSeleccionada;
+	private Alumno alumno;
+	// Hashtags hashtags;
+
+	// SharedPreferences sharedpreferences;
+	Editor editor;
+	Set<String> hashtag;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_configuracion);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		iniciarlizar();
+
+		addListenerOnSpinnerItemSelection();
+		
+		addSetOnClickListener();
+
+		Bundle extra = getIntent().getExtras();
+
+		if ((extra != null) && (extra.getBoolean(Nombres.ACTUALIZAR))) {
+			mostrarDialogo("Por favor, verifica tu carrera y el año de las materias que cursas");
+			cargarDatos();
+		} else {
+			mostrarDialogo("Por favor, selecciona tu carrera y el año de las materias que cursas");
+		}
+		
+	}
+
+	private void addSetOnClickListener() {
+		for (int anio = 1; anio < cantidadMaximaDeAnios; anio++){
+			
+			checks_Anios[anio].setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					int anioSeleccionado;
+					switch (v.getId()) {
+					case R.id.check_1:
+						anioSeleccionado = 1;
+						break;
+					case R.id.check_2:
+						anioSeleccionado = 2;
+						break;
+					case R.id.check_3:
+						anioSeleccionado = 3;
+						break;
+					case R.id.check_4:
+						anioSeleccionado = 4;
+						break;
+					case R.id.check_5:
+						anioSeleccionado = 5;
+						break;
+					case R.id.check_6:
+						anioSeleccionado = 6;
+						break;
+					default:
+						anioSeleccionado = 0;
+						break;
+					}
+					
+					Hashtag hashtag = new Hashtag(carreraSeleccionada, anioSeleccionado);
+					String identificadorSeleccionado = hashtag.toString();
+					
+					if(((CheckBox) v).isChecked()){
+						AgregarHashtag(identificadorSeleccionado);
+					} else {
+						EliminarHashtag(identificadorSeleccionado);
+					}	
+				}
+			});
+		}
+		
+	}
+
+	private void addListenerOnSpinnerItemSelection() {
+		spinner_carrera.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+
+				String nombreCarreraSeleccionada = parent
+						.getItemAtPosition(pos).toString();
+				
+				if (nombreCarreraSeleccionada != Nombres.SELECCIONAR_CARRERA) {
+					
+					carreraSeleccionada = Carrera
+							.CarreraConNombre(nombreCarreraSeleccionada);
+					
+					int invisible = 4;
+					int visible = 0;
+					
+					for (int anio = 1; anio < cantidadMaximaDeAnios; anio++) {
+						if (anio <= carreraSeleccionada.getCantidadDeAnios()) {
+							checks_Anios[anio]
+									.setChecked(ExisteHastagDeLaCarreraParaElAnio(
+											carreraSeleccionada, anio));
+							checks_Anios[anio].setVisibility(visible);
+						} else {
+							checks_Anios[anio].setVisibility(invisible);
+						}
+					}
+					Toast.makeText(parent.getContext(),
+							parent.getItemAtPosition(pos).toString(),
+							Toast.LENGTH_LONG).show();
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}
+
+		});
+	}
+	
+	
+
+	private void iniciarlizar() {
+		spinner_carrera = (Spinner) findViewById(R.id.spinner_carreras);
+
+		checks_Anios[1] = (CheckBox) findViewById(R.id.check_1);
+		checks_Anios[2] = (CheckBox) findViewById(R.id.check_2);
+		checks_Anios[3] = (CheckBox) findViewById(R.id.check_3);
+		checks_Anios[4] = (CheckBox) findViewById(R.id.check_4);
+		checks_Anios[5] = (CheckBox) findViewById(R.id.check_5);
+		checks_Anios[6] = (CheckBox) findViewById(R.id.check_6);
+
+		but_guardar = (Button) findViewById(R.id.but_guardar);
+
+		Carrera.crearCarreras();
+		List<String> carreras = Carrera.getNombresDeCarreras();
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, carreras);
+
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		spinner_carrera.setAdapter(dataAdapter);
+
+		// hashtags = new Hashtags();
+
+		/*
+		 * sharedpreferences = getPreferences(Context.MODE_PRIVATE); hashtag =
+		 * sharedpreferences.getStringSet("hashtagABuscar", new
+		 * HashSet<String>());
+		 */
+
+		sharedpreferences = getSharedPreferences("Hashtags", Context.MODE_PRIVATE); 
+		String hashtagGuardados = sharedpreferences.getString(llaveDeHastags,
+				"");
+		String[] hashtagsEnArray = hashtagGuardados.split(CARACTER_SEPARADOR);
+		enlistarArregloDeHashtag(hashtagsEnArray);
+
+	}
+
+	private void cargarDatos() {
+		alumno = Alumno.getInstance(getPreferences(Context.MODE_PRIVATE));
+		spinner_carrera.setSelection(alumno.getCarrera().getId());
+	}
+
+	private void mostrarDialogo(String mensaje) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				Configuracion.this);
+		builder.setTitle(R.string.configuracion_notificaciones);
+		builder.setMessage(mensaje);
+		builder.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.carreras, menu);
+		return true;
+	}
+
+	// Metodos que iria en su propia clase
+	private static final String CARACTER_SEPARADOR = ",";
+
+	private static String llaveDeHastags = "hashtagABuscar";
+
+	private List<String> hashtags = new ArrayList<String>();
+	private SharedPreferences sharedpreferences;
+
+	/*
+	 * public Hashtags() { sharedpreferences =
+	 * getPreferences(Context.MODE_PRIVATE); String hashtagGuardados =
+	 * sharedpreferences.getString(llaveDeHastags, ""); hashtags =
+	 * hashtagGuardados.split(CARACTER_SEPARADOR);
+	 * 
+	 * }
+	 */
+
+	public void AgregarHashtag(String identificador) {
+		if (!existeHashtagConIdentificador(identificador)) {
+			hashtags.add(identificador);
+			guardarHashtags();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void guardarHashtags() {
+		Editor editor = sharedpreferences.edit();
+		editor.putString(llaveDeHastags, HashtagEnPalabra());
+		editor.commit();
+	}
+
+	private void enlistarArregloDeHashtag(String[] hastagsAEnlistar) {
+		for (int posicion = 0; posicion < hastagsAEnlistar.length; posicion++) {
+			hashtags.add(hastagsAEnlistar[posicion].toString());
+			}
+	}
+	
+	private String HashtagEnPalabra() {
+		String hashtagEnPalabra = "";
+		
+		for (String hashtag : hashtags) {
+				hashtagEnPalabra = hashtagEnPalabra + hashtag + CARACTER_SEPARADOR;
+			}
+		return hashtagEnPalabra;
+	}
+
+	public void EliminarHashtag(String identificadorAEliminar) {
+		hashtags.remove(identificadorAEliminar);
+	}
+
+	public boolean existeHashtagConIdentificador(String identificador) {
+		boolean existeHashtag = false;
+		
+		for (String hashtag : hashtags) {
+			if(hashtag.equalsIgnoreCase(identificador)){
+				existeHashtag = true;
+			}
+		}
+		return existeHashtag;
+	}
+
+	public boolean ExisteHastagDeLaCarreraParaElAnio(Carrera carreraParaBuscar,
+			int anioParaBuscar) {
+
+		Hashtag hashtag = new Hashtag(carreraParaBuscar, anioParaBuscar);
+
+		return existeHashtagConIdentificador(hashtag.toString());
+	}
+
+	public String[] getHashtags() {
+		String[] hashtagsArray = new String[20];
+		return hashtags.toArray(hashtagsArray);
+	}
+
+}

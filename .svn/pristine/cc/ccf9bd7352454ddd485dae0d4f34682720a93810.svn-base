@@ -1,0 +1,38 @@
+package com.arquitecturas.sysacad.utils;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+public class CursadoMateriasAdapter extends ArrayAdapter<String> {
+	
+	LayoutInflater mInflater;
+	
+
+	public CursadoMateriasAdapter(Context context, int resource,
+			int textViewResourceId, List<String> objects) {
+		super(context, resource, textViewResourceId, objects);
+		
+		mInflater = LayoutInflater.from(context);
+	}
+	
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		return super.getView(position, convertView, parent);
+	}
+	
+	private class ViewHolder{
+		public TextView lblNombre;
+		public TextView lblCondicion;
+		public TextView lblAnio;
+		public TextView lblAula;
+		public TextView lblHorarios;
+		public TextView lblParciales;
+	}
+
+}

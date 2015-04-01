@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:padding="@dimen/activity_small_padding" 
+    android:background="@color/background_activities">
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_small_padding" >
+    <TextView
+        android:id="@+id/nombreMateria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Materia"
+        android:textSize="@dimen/tamanio_texto_titulo"
+        android:textColor="@android:color/black" />
+    
+    <TextView
+        android:id="@+id/parcial1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/nombreMateria"
+        android:text="Parcial 1: "
+        android:textSize="@dimen/tamanio_texto_descripcion"
+        android:textColor="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/nota1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombreMateria"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/parcial1"
+        android:text="nota" />
+    
+    <TextView
+        android:id="@+id/parcial2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parcial1"
+        android:textSize="@dimen/tamanio_texto_descripcion"
+        android:textColor="@android:color/darker_gray"
+        android:text="Parcial 2: " />
+    
+    <TextView
+        android:id="@+id/nota2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parcial1"
+        android:layout_toRightOf="@+id/parcial2"
+        android:text="nota" />
+    
+    <TextView
+        android:id="@+id/parcial3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parcial2"
+        android:textSize="@dimen/tamanio_texto_descripcion"
+        android:textColor="@android:color/darker_gray"
+        android:text="Parcial 3: " />
+    
+    <TextView
+        android:id="@+id/nota3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parcial2"
+        android:layout_toRightOf="@+id/parcial3"
+        android:text="nota" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

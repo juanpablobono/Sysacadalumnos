@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.arquitecturas.sysacad"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+    
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat" >
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Login"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Notificaciones"
+            android:label="@string/title_activity_notificaciones" >
+            <intent-filter>
+                <action android:name="com.arquitecturas.sysacad.activity_notificaciones" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.DatosPersonales"
+            android:label="@string/title_activity_datos_personales" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Calendario"
+            android:label="@string/title_activity_calendario" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Consultas"
+            android:label="@string/title_activity_consultas" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.InformacionExtra"
+            android:label="@string/title_activity_informacion_extra" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Tramites"
+            android:label="@string/title_activity_tramites" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.SolicitarCertificados"
+            android:label="@string/title_activity_solicitar_certificados" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.NotasParciales"
+            android:label="@string/title_activity_notas_parciales" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.InscripcionExamen"
+            android:label="@string/title_activity_inscripcion_examen" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.InscripcionCursado"
+            android:label="@string/title_activity_inscripcion_cursado" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.TramiteMesaExamen"
+            android:label="@string/title_activity_actividades_tramites" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.TituloProfesional"
+            android:label="@string/title_activity_actividades_tramites_titulo" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.TramiteCambioEspecialidad"
+            android:label="@string/title_activity_tramite_cambio_especialidad" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.TramitePaseFacultad"
+            android:label="@string/title_activity_tramite_pase_facultad" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.TramiteTituloProfesional"
+            android:label="@string/title_activity_tramite_titulo_profesional" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.SolicitarCertificado"
+            android:label="@string/title_activity_solicitar_certificado" >
+        </activity>
+        <activity
+            android:name="com.arquitecturas.sysacad.ui.Configuracion"
+            android:label="@string/title_activity_configuracion" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.arquitecturas.sysacad.ui.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

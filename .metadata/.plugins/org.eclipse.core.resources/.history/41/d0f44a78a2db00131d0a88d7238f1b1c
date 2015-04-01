@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/but_datos_personales"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/but_datos_personales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button4"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="26dp"
+        android:text="@string/title_activity_datos_personales" />
+
+    <Button
+        android:id="@+id/but_calendario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button6"
+        android:layout_alignLeft="@+id/but_datos_personales"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="103dp"
+        android:text="@string/title_activity_calendario" />
+
+    <Button
+        android:id="@+id/but_notas_parciales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/but_notificaciones"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/but_notificaciones"
+        android:text="@string/title_activity_notas_parciales" />
+
+    <Button
+        android:id="@+id/but_notificaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/but_calendario"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/but_calendario"
+        android:text="@string/title_activity_notificaciones" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="108dp"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/button6"
+        android:text="Button" />
+
+</RelativeLayout>

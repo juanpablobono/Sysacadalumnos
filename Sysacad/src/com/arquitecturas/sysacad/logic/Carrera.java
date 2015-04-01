@@ -1,0 +1,226 @@
+package com.arquitecturas.sysacad.logic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Carrera {
+    private String nombre;
+    private String identificador;
+    private int id;
+    private int cantidadDeAnios;
+    private String universidad;
+
+    private static List<Carrera> carreras = new ArrayList<Carrera>();
+
+    public Carrera(int id) {
+	this.id = id;
+	switch (id) {
+	case Nombres.ID_INGENIERIA_QUIMICA:
+	    this.nombre = Nombres.INGENIERIA_QUIMICA;
+	    this.identificador = Nombres.QUIMICA;
+	    break;
+	case Nombres.ID_INGENIERIA_ELECTROMECANICA:
+	    this.nombre = Nombres.INGENIERIA_ELECTROMECANICA;
+	    this.identificador = Nombres.ELECTROMECANICA;
+	    break;
+	case Nombres.ID_INGENIERIA_ELECTRONICA:
+	    this.nombre = Nombres.INGENIERIA_ELECTRONICA;
+	    this.identificador = Nombres.ELECTRONICA;
+	    break;
+	case Nombres.ID_INGENIERIA_SISTEMAS:
+	    this.nombre = Nombres.INGENIERIA_SISTEMAS;
+	    this.identificador = Nombres.SISTEMAS;
+	    break;
+	case Nombres.ID_LICENCIATURA_RURAL:
+	    this.nombre = Nombres.LICENCIATURA_RURAL;
+	    this.identificador = Nombres.RURAL;
+	    break;
+	case Nombres.ID_TECNICATURA_PROGRAMACION:
+	    this.nombre = Nombres.TECNICATURA_PROGRAMACION;
+	    this.identificador = Nombres.PROGRAMACION;
+	    break;
+	}
+    }
+
+    public Carrera(int id, int cantidadDeAnios) {
+	this.id = id;
+	switch (id) {
+	case Nombres.ID_INGENIERIA_QUIMICA:
+	    this.nombre = Nombres.INGENIERIA_QUIMICA;
+	    this.identificador = Nombres.QUIMICA;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_INGENIERIA_ELECTROMECANICA:
+	    this.nombre = Nombres.INGENIERIA_ELECTROMECANICA;
+	    this.identificador = Nombres.ELECTROMECANICA;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_INGENIERIA_ELECTRONICA:
+	    this.nombre = Nombres.INGENIERIA_ELECTRONICA;
+	    this.identificador = Nombres.ELECTRONICA;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_INGENIERIA_SISTEMAS:
+	    this.nombre = Nombres.INGENIERIA_SISTEMAS;
+	    this.identificador = Nombres.SISTEMAS;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_LICENCIATURA_RURAL:
+	    this.nombre = Nombres.LICENCIATURA_RURAL;
+	    this.identificador = Nombres.RURAL;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_TECNICATURA_PROGRAMACION:
+	    this.nombre = Nombres.TECNICATURA_PROGRAMACION;
+	    this.identificador = Nombres.PROGRAMACION;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_LICENCIATURA_ORG_INDUSTRIAL:
+	    this.nombre = Nombres.LICENCIATURA_ORG_INDUSTRIAL;
+	    this.identificador = Nombres.ORG_INDUSTRIAL;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_TECNICATURA_BROMATOLOGIA:
+	    this.nombre = Nombres.TECNICATURA_BROMATOLOGIA;
+	    this.identificador = Nombres.BROMATOLOGIA;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_LICENCIATURA_TECNOL_EDUCATIVA:
+	    this.nombre = Nombres.LICENCIATURA_TECNOL_EDUCATIVA;
+	    this.identificador = Nombres.TECNOL_EDUCATIVA;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	case Nombres.ID_TECNICATURA_IND_ALIMENTARIAS:
+	    this.nombre = Nombres.TECNICATURA_IND_ALIMENTARIAS;
+	    this.identificador = Nombres.IND_ALIMENTARIAS;
+	    this.universidad = Nombres.UNIVERSIDAD_UTN;
+	    break;
+	// Carreras de la UCES
+	case Nombres.ID_ABOGACIA:
+	    this.nombre = Nombres.ABOGACIA;
+	    this.identificador = Nombres.IDENTIFICADOR_ABOGACIA;
+	    this.universidad = Nombres.UNIVERSIDAD_UCES;
+	    break;
+	case Nombres.ID_CONTADOR_PUBLICO:
+	    this.nombre = Nombres.CONTADOR_PUBLICO;
+	    this.identificador = Nombres.IDENTIFICADOR_CONTADOR_PUBLICO;
+	    this.universidad = Nombres.UNIVERSIDAD_UCES;
+	    break;
+	case Nombres.ID_LICENCIATURA_RRHH:
+	    this.nombre = Nombres.LICENCIATURA_RRHH;
+	    this.identificador = Nombres.IDENTIFICADOR_LICENCIATURA_RRHH;
+	    this.universidad = Nombres.UNIVERSIDAD_UCES;
+	    break;
+	case Nombres.ID_LICENCIATURA_COMERCIO_EXT:
+	    this.nombre = Nombres.LICENCIATURA_COMERCIO_EXT;
+	    this.identificador = Nombres.IDENTIFICADOR_LICENCIATURA_COMERCIO_EXT;
+	    this.universidad = Nombres.UNIVERSIDAD_UCES;
+	    break;
+	}
+	setCantidadDeAnios(cantidadDeAnios);
+    }
+
+    public int getId() {
+	return id;
+    }
+
+    public String getNombre() {
+	return nombre;
+    }
+
+    public String getIdentificador() {
+	return identificador;
+    }
+
+    @Override
+    public String toString() {
+	return nombre;
+    }
+
+    public static List<Carrera> getCarreras() {
+	return carreras;
+    }
+
+    public static List<String> getNombresDeCarreras() {
+	Carrera.crearCarreras();
+
+	List<String> nombresDeCarreras = new ArrayList<String>();
+	nombresDeCarreras.add(Nombres.SELECCIONAR_CARRERA);
+	for (Carrera carrera : carreras) {
+	    nombresDeCarreras.add(carrera.nombre);
+	}
+	return nombresDeCarreras;
+    }
+    
+    public static List<String> getNombresDeCarrerasCambioEspecialidad() {
+    	Carrera.crearCarreras();
+    	
+    	List<String> nombresDeCarreras = new ArrayList<String>();
+    	nombresDeCarreras.add(Nombres.SELECCIONAR_CARRERA_DESTINO);
+    	for (Carrera carrera : carreras) {
+    		nombresDeCarreras.add(carrera.nombre);
+    	}
+    	return nombresDeCarreras;    	
+    }
+
+    public static void crearCarreras() {
+	if (carreras.size() == 0) {
+	    carreras.add(new Carrera(Nombres.ID_INGENIERIA_QUIMICA, 5));
+	    carreras.add(new Carrera(Nombres.ID_INGENIERIA_ELECTRONICA, 6));
+	    carreras.add(new Carrera(Nombres.ID_INGENIERIA_ELECTROMECANICA, 5));
+	    carreras.add(new Carrera(Nombres.ID_INGENIERIA_SISTEMAS, 5));
+	    carreras.add(new Carrera(Nombres.ID_LICENCIATURA_RURAL, 4));
+	    carreras.add(new Carrera(Nombres.ID_TECNICATURA_PROGRAMACION, 2));
+	    // carreras.add(new Carrera(Nombres.ID_LICENCIATURA_ORG_INDUSTRIAL,
+	    // 4));
+	    // carreras.add(new Carrera(Nombres.ID_TECNICATURA_BROMATOLOGIA,
+	    // 2));
+	    // carreras.add(new
+	    // Carrera(Nombres.ID_LICENCIATURA_TECNOL_EDUCATIVA,
+	    // 2));
+	    // carreras.add(new Carrera(Nombres.ID_TECNICATURA_IND_ALIMENTARIAS,
+	    // 2));
+	    // Carreras de la UCES
+	    // carreras.add(new Carrera(Nombres.ID_ABOGACIA, 5));
+	    // carreras.add(new Carrera(Nombres.ID_CONTADOR_PUBLICO, 4));
+	    // carreras.add(new Carrera(Nombres.ID_LICENCIATURA_RRHH, 4));
+	    // carreras.add(new Carrera(Nombres.ID_LICENCIATURA_COMERCIO_EXT,
+	    // 4));
+	}
+    }
+
+    public static Carrera CarreraConNombre(String nombreABuscar) {
+	if (carreras.isEmpty()) {
+	    Carrera.crearCarreras();
+	}
+	Carrera carreraEncontrada = null;
+	for (Carrera carrera : carreras) {
+	    if (carrera.nombre.equalsIgnoreCase(nombreABuscar)) {
+		carreraEncontrada = carrera;
+	    }
+	}
+	return carreraEncontrada;
+    }
+
+    public static Carrera getCarrera(int id) {
+	Carrera carreraBuscada = null;
+	for (Carrera item : carreras) {
+	    if (item.getId() == id)
+		carreraBuscada = item;
+	}
+	return carreraBuscada;
+    }
+
+    public int getCantidadDeAnios() {
+	return cantidadDeAnios;
+    }
+
+    private void setCantidadDeAnios(int cantidad) {
+	this.cantidadDeAnios = cantidad;
+    }
+
+    public String getUniversidad() {
+	return this.universidad;
+    }
+
+}

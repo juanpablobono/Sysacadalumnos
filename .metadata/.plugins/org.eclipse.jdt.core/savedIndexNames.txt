@@ -1,0 +1,10 @@
+INDEX VERSION 1.126+C:\SYSACAD\sysacad\trunk\workspace - Kopie\.metadata\.plugins\org.eclipse.jdt.core
+3432868590.index
+3556978837.index
+3613802269.index
+419108452.index
+3374547351.index
+2157853732.index
+2350354114.index
+2501144728.index
+1284074322.index

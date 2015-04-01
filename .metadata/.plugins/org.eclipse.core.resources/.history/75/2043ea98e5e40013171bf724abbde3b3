@@ -1,0 +1,195 @@
+package com.arquitecturas.sysacad.ui;
+
+import java.text.BreakIterator;
+
+import javax.security.auth.PrivateCredentialPermission;
+
+import com.arquitecturas.*;
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.logic.Alumno;
+
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import junit.framework.Protectable;
+import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.view.View.OnClickListener;
+
+public class MainActivity extends ActionBarActivity {
+	
+	private String[] opciones = {"Notas de parciales", "Datos personales", "Notificaciones", "Informacion extra", "Calendario", "Configuracion", "Consultas"};
+	private String password;
+	private Alumno alumno;
+	private ListView lista;
+	private boolean usuarioLogeado = false;
+	private SharedPreferences sharedPreferences;
+	private SharedPreferences.Editor editor;
+	private final int ID_NOTAS_PARCIALES = 0;
+	private final int ID_CONSULTAS = 1;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+//		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		cargarAlumno();
+		
+		lista = (ListView) findViewById(R.id.listView_main);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, opciones);
+		lista.setAdapter(adapter);
+		
+		lista.setOnItemClickListener(new OnItemClickListener() {
+			
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id){
+				
+				Intent in = null;
+				
+				switch(position){
+				case 0:
+					if(!isUsuarioLogeado()) {
+						in = new Intent(MainActivity.this, Login.class);
+						in.putExtra("siguiente", ID_NOTAS_PARCIALES);	
+					}
+					else {
+						in = new Intent(MainActivity.this, NotasParciales.class);
+					}
+					break;
+				case 1:
+					in = new Intent(MainActivity.this, DatosPersonales.class);
+					break;
+				case 2:
+					in = new Intent(MainActivity.this, Notificaciones.class);
+				break;
+				case 3:
+					in = new Intent(MainActivity.this, InformacionExtra.class);
+				break;
+				case 4:
+					in = new Intent(MainActivity.this, Calendario.class);
+				break;
+				case 5:
+					in = new Intent(MainActivity.this, Configuracion.class);
+					break;
+				case 6:
+					if(!isUsuarioLogeado()) {
+						in = new Intent(MainActivity.this, Login.class);
+						in.putExtra("siguiente", ID_CONSULTAS);	
+					}
+					else {
+						in = new Intent(MainActivity.this, Consultas.class);
+					}
+					break;
+				default:
+					break;
+				}			
+				startActivity(in);				
+			}
+		});
+	}
+
+	private void cargarAlumno() {
+		sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		alumno = Alumno.reconstruirAlumno(sharedPreferences, false);
+	}
+
+	private void loguearUsuario() {		
+		
+		if(!isUsuarioLogeado()) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+	        LayoutInflater factory = MainActivity.this.getLayoutInflater();
+	        final View vista = factory.inflate(R.layout.layout_dialogo, null);
+	        
+	        builder.setView(vista);
+	        builder.setTitle(R.string.title_activity_login);
+	        builder.setPositiveButton(R.string.enviar, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   try {
+	                		   final EditText entradaLegajo = (EditText) vista.findViewById(R.id.legajo_login);
+	                           final EditText entradaPassword = (EditText) vista.findViewById(R.id.password_login);
+	                           
+	                           setPassword(entradaPassword.getText().toString());
+	                           /* TODO metodo que comprueba si el usuario y contraseña son correctos*/ 
+	                           setUsuarioLogeado(true);
+	                	   }
+	                	   catch (Exception e) {
+	                		   e.printStackTrace();
+	                	   }
+	                	   finally {
+	                		   dialog.dismiss();            		   
+	                	   }
+	                   }
+	               })
+	               .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   setUsuarioLogeado(false);
+	                	   dialog.dismiss();
+	                   }
+	               });
+	        
+	        AlertDialog dialogo = builder.create();
+	        
+//	        if(getLegajo() != null) {
+//	        	((EditText) dialogo.findViewById(R.id.legajo_login)).setText(getLegajo());
+//	        	((EditText) dialogo.findViewById(R.id.password_login)).requestFocus();
+//	        }
+//	        else {
+//	        	((EditText) dialogo.findViewById(R.id.legajo_login)).requestFocus();	        	
+//	        }
+	        
+	        dialogo.show();
+		}
+	}
+		
+	private boolean isUsuarioLogeado() {
+		return usuarioLogeado;
+	}
+	
+	private void setUsuarioLogeado(boolean usuarioLogeado) {
+		this.usuarioLogeado = usuarioLogeado;
+	}
+	
+	private SharedPreferences.Editor getEditor() {
+		
+		if(editor == null) {
+			editor = sharedPreferences.edit();
+		}
+		
+		return editor;
+	}
+	
+	private String getPassword() {
+		return password;
+	}
+	
+	private void setPassword(String password) {
+		this.password = password;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+}

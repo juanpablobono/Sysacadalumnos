@@ -1,0 +1,377 @@
+package com.arquitecturas.sysacad.ui;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import com.arquitecturas.sysacad.R;
+import com.arquitecturas.sysacad.twitter.ConexionTwitter;
+//import com.arquitecturas.sysacad.twitter.ConexionTwitter.GetBearerTokenTask;
+//import com.arquitecturas.sysacad.twitter.ConexionTwitter.GetFeedTask;
+
+public class Notificaciones extends ActionBarActivity {
+	// Provisorio tendria que ir en los recursos
+	public final String[] hashtagABuscar = { "TeLoDigoConUnTema",
+			"AltaInfanciaSi", "RIPWMYBHouse", "MiSerieFavorita",
+			"ArgentinaSalvaje" };
+
+	String[] opciones = { "Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4" }; // llenar
+																			// con
+																			// json
+	ListView lista;
+	int mId;
+	Button botonNotificaciones;
+	ArrayList<String> resultados = null;
+
+	// ------------variables busqueda twitter
+	final String APIKEY = "T1iHE66S6uVxrpGnbcaJtULTc";
+	final String APISECRET = "xiFdN72P59mcs3DOYtnOVdkjnjf4HGPxOR4FUyocJRy9zl7eZL";
+	private String jsonResultado = "";
+	private boolean esArroba = false;
+	private String access_token = "No hay token no hay";
+	ConexionTwitter nuevaConexion;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_notificaciones);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		// new GetBearerTokenTask().execute();
+
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+
+		nuevaConexion = new ConexionTwitter();
+
+		if (sharedPreferences.getBoolean(hashtagABuscar[0], false)) {
+			nuevaConexion.BuscarTwitter(hashtagABuscar[0], false);
+		}
+		/*
+		if (sharedPreferences.getBoolean(hashtagABuscar[1], false)) {
+			nuevaConexion.BuscarTwitter(hashtagABuscar[1], false);
+		}
+		if (sharedPreferences.getBoolean(hashtagABuscar[2], false)) {
+			nuevaConexion.BuscarTwitter(hashtagABuscar[2], false);
+		}
+		if (sharedPreferences.getBoolean(hashtagABuscar[3], false)) {
+			nuevaConexion.BuscarTwitter(hashtagABuscar[3], false);
+		}
+		if (sharedPreferences.getBoolean(hashtagABuscar[4], false)) {
+			nuevaConexion.BuscarTwitter(hashtagABuscar[4], false);
+		}
+		*/
+
+		botonNotificaciones = (Button) findViewById(R.id.but_notificaciones);
+		lista = (ListView) findViewById(R.id.lista_notificaciones);
+
+		botonNotificaciones.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				resultados = nuevaConexion.mostrarResultado();
+
+				if (resultados.isEmpty()) {
+					resultados.add("No hay Tweets");
+				}
+
+				// BuscarTwitter("MiSerieFavorita", false);
+
+			}
+		});
+
+	}
+
+	// ------------------ metodos busqueda twitter
+	protected class GetBearerTokenTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+
+			try {
+				DefaultHttpClient httpclient = new DefaultHttpClient(
+						new BasicHttpParams());
+
+				HttpPost httppost = new HttpPost(
+						"https://api.twitter.com/oauth2/token");
+
+				String apiString = APIKEY + ":" + APISECRET;
+				String authorization = "Basic "
+						+ Base64.encodeToString(apiString.getBytes(),
+								Base64.NO_WRAP);
+
+				httppost.setHeader("Authorization", authorization);
+				httppost.setHeader("Content-Type",
+						"application/x-www-form-urlencoded;charset=UTF-8");
+				httppost.setEntity(new StringEntity(
+						"grant_type=client_credentials"));
+
+				InputStream inputStream = null;
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+				inputStream = entity.getContent();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(inputStream, "UTF-8"), 8);
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				return sb.toString();
+
+			} catch (Exception e) {
+				Log.e("GetBearerTokenTask", "Error:" + e.getMessage());
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String jsonText) {
+			try {
+				JSONObject root = new JSONObject(jsonText);
+				access_token = (String) root.getString("access_token");
+
+			} catch (Exception e) {
+				Log.e("GetBearerTokenTask", "Error:" + e.getMessage());
+			}
+		}
+	}
+
+	protected class GetFeedTask extends AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+
+			try {
+				DefaultHttpClient httpclient = new DefaultHttpClient(
+						new BasicHttpParams());
+
+				HttpGet httpget = new HttpGet(params[1]);
+				httpget.setHeader("Authorization", "Bearer " + params[0]);
+				httpget.setHeader("Content-type", "application/json");
+
+				InputStream inputStream = null;
+				HttpResponse response = httpclient.execute(httpget);
+				HttpEntity entity = response.getEntity();
+
+				inputStream = entity.getContent();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(inputStream, "UTF-8"), 8);
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				return sb.toString();
+
+			} catch (Exception e) {
+				Log.e("GetFeedTask", "Error:" + e.getMessage());
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String jsonText) {
+
+			try {
+
+				jsonResultado = jsonText;
+				mostrarResultado();
+
+			} catch (Exception e) {
+				Log.e("GetFeedTask", "Error:" + e.getMessage());
+			} finally {
+				if (resultados.isEmpty()) {
+					resultados.add(access_token);
+				}
+
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						getApplicationContext(),
+						android.R.layout.simple_list_item_1, resultados);
+				lista.setAdapter(adapter);
+			}
+
+		}
+	}
+
+	public void BuscarTwitter(String cadenaABuscar, boolean esArroba) {
+
+		String cantidadResultados = "5";
+
+		String httpABuscar = "https://api.twitter.com/1.1/";
+
+		if (esArroba) {
+
+			httpABuscar = httpABuscar
+					+ "statuses/user_timeline.json?screen_name="
+					+ cadenaABuscar;
+		} else {
+
+			httpABuscar = httpABuscar + "search/tweets.json?q=%23"
+					+ cadenaABuscar;
+		}
+
+		httpABuscar = httpABuscar + "&result_type=recent&count=";
+
+		if (cantidadCorrecta(cantidadResultados)) {
+
+			httpABuscar = httpABuscar + cantidadResultados;
+		} else {
+
+			httpABuscar = httpABuscar + "1";
+		}
+
+		new GetFeedTask().execute(access_token, httpABuscar);
+
+	}
+
+	public boolean cantidadCorrecta(String cantidadResultados) {
+
+		boolean entre1y100 = false;
+
+		try {
+			if (cantidadResultados != "") {
+
+				int cantidad = Integer.parseInt(cantidadResultados);
+
+				if (cantidad >= 1 && cantidad <= 100) {
+
+					entre1y100 = true;
+				}
+			}
+		} catch (Exception e) {
+			Log.e("cantidadCorrecta", "Error:" + e.getMessage());
+
+		}
+
+		return entre1y100;
+	}
+
+	public void mostrarResultado() {
+
+		ArrayList<String> listaResultados = new ArrayList<String>();
+
+		try {
+
+			if (esArroba) {
+
+				// Codigo para @
+
+				JSONArray jsonArray = new JSONArray(jsonResultado);
+				for (int i = 0; i < jsonArray.length(); i++) {
+
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+					if (jsonObject.getString("text") != null) {
+
+						listaResultados.add(jsonObject.getString("text"));
+					}
+				}
+			}
+
+			else {
+
+				// Codigo para #
+
+				JSONObject jsonObject = new JSONObject(jsonResultado);
+				JSONArray statusesArray = jsonObject.getJSONArray("statuses");
+				for (int i = 0; i < statusesArray.length(); i++) {
+
+					JSONObject jsonObj = statusesArray.getJSONObject(i);
+					if (jsonObj.getString("text") != null) {
+
+						listaResultados.add(jsonObj.getString("text"));
+
+					}
+				}
+			}
+
+		}
+
+		catch (Exception e) {
+			Log.e("mostrarResultado", "Error:" + e.getMessage());
+		} finally {
+			// return listaResultados;
+			resultados = listaResultados;
+		}
+
+	}
+
+	// ------------------fin metodos busqueda twitter
+
+	private void notificar() {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle("My notification")
+				.setContentText("Hello World!").setAutoCancel(true);
+
+		Intent resultIntent = new Intent(this, Notificaciones.class);
+
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+		stackBuilder.addParentStack(Notificaciones.class);
+
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		mNotificationManager.notify(mId, mBuilder.build());
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.notificaciones, menu);
+		return true;
+	}
+
+}

@@ -1,0 +1,122 @@
+package com.arquitecturas.sysacad.ui;
+
+import com.arquitecturas.sysacad.R;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
+
+public class Configuracion extends ActionBarActivity {
+	
+	//Provisorio tendria que ir en recursos
+	public final String[] hashtagABuscar = { "TeLoDigoConUnTema",
+			"AltaInfanciaSi", "RIPWMYBHouse", "MiSerieFavorita",
+			"ArgentinaSalvaje" };
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_configuracion);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		final SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(hashtagABuscar[0], false);
+		editor.putBoolean(hashtagABuscar[1], false);
+		editor.putBoolean(hashtagABuscar[2], false);
+		editor.putBoolean(hashtagABuscar[3], false);
+		editor.putBoolean(hashtagABuscar[4], false);
+
+		CheckBox check0 = (CheckBox) findViewById(R.id.check_1);
+		check0.setText(hashtagABuscar[0]);
+		check0.setChecked(sharedPreferences
+				.getBoolean(hashtagABuscar[0], false));
+		check0.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putBoolean(hashtagABuscar[0], ((CheckBox) v).isChecked());
+				editor.commit();
+			}
+		});
+
+		CheckBox check1 = (CheckBox) findViewById(R.id.check_2);
+		check1.setText(hashtagABuscar[1]);
+		check1.setChecked(sharedPreferences
+				.getBoolean(hashtagABuscar[1], false));
+		check1.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putBoolean(hashtagABuscar[1], ((CheckBox) v).isChecked());
+				editor.commit();
+			}
+		});
+
+		CheckBox check2 = (CheckBox) findViewById(R.id.check_3);
+		check2.setText(hashtagABuscar[2]);
+		check2.setChecked(sharedPreferences
+				.getBoolean(hashtagABuscar[2], false));
+		check2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putBoolean(hashtagABuscar[2], ((CheckBox) v).isChecked());
+				editor.commit();
+			}
+		});
+
+		CheckBox check3 = (CheckBox) findViewById(R.id.check_4);
+		check3.setText(hashtagABuscar[3]);
+		check3.setChecked(sharedPreferences
+				.getBoolean(hashtagABuscar[3], false));
+		check3.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putBoolean(hashtagABuscar[3], ((CheckBox) v).isChecked());
+				editor.commit();
+			}
+		});
+
+		CheckBox check4 = (CheckBox) findViewById(R.id.check_5);
+		check4.setText(hashtagABuscar[4]);
+		check4.setChecked(sharedPreferences
+				.getBoolean(hashtagABuscar[4], false));
+		check4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putBoolean(hashtagABuscar[4], ((CheckBox) v).isChecked());
+				editor.commit();
+			}
+		});
+
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    	case android.R.id.home:
+	    		NavUtils.navigateUpFromSameTask(this);
+	    		return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.carreras, menu);
+		return true;
+	}
+
+}

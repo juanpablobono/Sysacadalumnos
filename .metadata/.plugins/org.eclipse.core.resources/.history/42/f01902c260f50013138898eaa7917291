@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="BackgroundPrincipal">#4282D3</color>
+    
+    
+	<style name="MyActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/BackgroundPrincipal</item>
+
+        
+    </style>
+    
+</resources>

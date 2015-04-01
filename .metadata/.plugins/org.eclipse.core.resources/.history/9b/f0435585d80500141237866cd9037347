@@ -1,0 +1,7 @@
+package com.arquitecturas.sysacad.utils;
+
+import android.widget.ArrayAdapter;
+
+public class CursadoMateriasAdapter extends ArrayAdapter<T> {
+
+}

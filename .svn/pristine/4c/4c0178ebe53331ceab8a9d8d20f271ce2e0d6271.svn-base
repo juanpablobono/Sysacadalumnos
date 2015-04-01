@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 3 elements from project &apos;JARVIS&apos;&#x0D;&#x0A;- Original project: &apos;JARVIS&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     JARVIS/src/javax.speech.recognition&#x0D;&#x0A;     JARVIS/src/javax.speech.spi&#x0D;&#x0A;     JARVIS/src/javax.speech.synthesis" description="Delete elements" element1="/src&lt;javax.speech.synthesis" element2="/src&lt;javax.speech.spi" element3="/src&lt;javax.speech.recognition" elements="3" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1369337862418" subPackages="false" version="1.0"/>
+</session>

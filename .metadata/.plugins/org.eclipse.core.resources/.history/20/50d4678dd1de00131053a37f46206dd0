@@ -1,0 +1,130 @@
+package com.arquitecturas.sysacad.ui;
+
+import java.text.BreakIterator;
+
+import com.arquitecturas.*;
+import com.arquitecturas.sysacad.R;
+
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import junit.framework.Protectable;
+import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.view.View.OnClickListener;
+
+public class MainActivity extends Activity {
+	
+	String[] opciones = {"Notas de parciales", "Datos personales", "Notificaciones", "Informacion extra", "Calendario", "Configuracion", "Consultas"};
+	ListView lista;
+	boolean usuarioLogeado = false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean("primeraEjecucion", true);
+		
+		if(sharedPreferences.getBoolean("primeraEjecucion", false)){
+			editor.putBoolean("primeraEjecucion", false);
+			Intent in = new Intent(MainActivity.this, Notificaciones.class);
+			startActivity(in);
+		}		
+		
+		lista = (ListView) findViewById(R.id.listView_main);
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, opciones);
+		lista.setAdapter(adapter);
+		
+		lista.setOnItemClickListener(new OnItemClickListener() {
+			
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id){
+				Intent in = null;
+				switch(position){
+				case 0:
+					//loguearUsuario();
+					in = new Intent(MainActivity.this, NotasParciales.class);
+					break;
+				case 1:
+					in = new Intent(MainActivity.this, DatosPersonales.class);
+					break;
+				case 2:
+					in = new Intent(MainActivity.this, Notificaciones.class);
+				break;
+				case 3:
+					in = new Intent(MainActivity.this, InformacionExtra.class);
+				break;
+				case 4:
+					in = new Intent(MainActivity.this, Calendario.class);
+				break;
+				case 5:
+					in = new Intent(MainActivity.this, Configuracion.class);
+					break;
+				case 6:
+					loguearUsuario();
+					in = new Intent(MainActivity.this, Consultas.class);
+					break;
+				default:
+					break;
+				}
+				
+				
+				startActivity(in);
+			}
+
+		});
+	}
+
+	private void loguearUsuario() {
+		
+//		if(/*!usuarioLogeado*/true) {
+//			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//	        
+//	        LayoutInflater factory = MainActivity.this.getLayoutInflater();
+//	        builder.setView(factory.inflate(R.layout.layout_dialogo, null));
+//	        builder.setTitle(R.string.title_activity_login);
+//	        builder.setPositiveButton(R.string.title_activity_login, new DialogInterface.OnClickListener() {
+//	                   public void onClick(DialogInterface dialog, int id) {
+//	                       finish();
+//	                   }
+//	               })
+//	               .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+//	                   public void onClick(DialogInterface dialog, int id) {
+//	                       finish();
+//	                   }
+//	               });
+//	        AlertDialog dialogo = builder.create();
+//	        dialogo.show();
+//		}
+		/* TODO terminar de establecer los datos de onActivityResult y 
+		 * ver cómo establecer el atributo usuarioLogueado automáticamente
+		 * a partir del resultado del método startActivityForResult*/ 
+	}
+		
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+}

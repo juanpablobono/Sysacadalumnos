@@ -1,0 +1,67 @@
+package com.arquitecturas.sysacad;
+
+import com.arquitecturas.sysacad.R;
+
+import android.R.array;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.ExpandableListActivity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+
+public class Notificaciones extends Activity {
+
+	String[] opciones ={"Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"}; // llenar con json 
+	ListView lista;
+	int mId;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_notificaciones);
+		
+		lista = (ListView) findViewById(R.id.lista_notificaciones);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, opciones);
+		lista.setAdapter(adapter);
+		
+	}
+
+	private void notificar() {
+		NotificationCompat.Builder mBuilder =
+	        new NotificationCompat.Builder(this)
+	        .setSmallIcon(R.drawable.ic_launcher)
+	        .setContentTitle("My notification")
+	        .setContentText("Hello World!")
+	        .setAutoCancel(true);
+		
+	Intent resultIntent = new Intent(this, Notificaciones.class);
+
+	TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+	
+	stackBuilder.addParentStack(Notificaciones.class);
+	
+	stackBuilder.addNextIntent(resultIntent);
+	PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+	mBuilder.setContentIntent(resultPendingIntent);
+	NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+	
+	mNotificationManager.notify(mId, mBuilder.build());	
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.notificaciones, menu); 
+		return true;
+	}
+
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10sp" >
+
+    <EditText
+        android:id="@+id/password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/legajo_login"
+        android:ems="10"
+        android:hint="@string/contrasenia"
+        android:inputType="textPassword" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/legajo_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password_login"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="@string/legajo"
+        android:singleLine="true" />
+
+</RelativeLayout>

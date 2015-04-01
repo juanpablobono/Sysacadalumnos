@@ -1,0 +1,12 @@
+package com.arquitecturas.sysacad.utils;
+
+public class Dialogo {
+	
+	public static void mostrarMensaje(String titulo, String mensaje) {
+		
+	}
+	
+	public static void mostrarMensaje(int titulo, String mensaje) {
+		
+	}
+}
